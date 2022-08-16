@@ -19,6 +19,6 @@ udisksctl monitor | grep --line-buffered " Device:" | while read -r -- device; d
     DEV="$(echo $device | sed 's/^Device: //')"
   fi
   if [ -n "$DEV" ]; then
-    udisksctl mount --no-user-interaction --block-device "$DEV"
+    udisksctl mount --no-user-interaction --options ro --block-device "$DEV"
   fi
 done
