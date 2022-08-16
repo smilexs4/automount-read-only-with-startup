@@ -2,6 +2,18 @@
 
 sleep 5
 
+for disk in /dev/sd[a-z] /dev/sd[a-z][a-z]; do
+  if test -b $disk; then
+    for partition in $disk[1-9] $disk[0-9][0-9]; do
+      if test -b $partition; then
+        if [ -n $partition ]; then
+          udisksctl mount --no-user-interaction --options ro --block-device $partition
+        fi
+      fi
+    done
+  fi
+done
+
 udisksctl monitor | grep --line-buffered " Device:" | while read -r -- device; do
   if echo $device| grep -q "[0-9]$"; then
     DEV="$(echo $device | sed 's/^Device: //')"
